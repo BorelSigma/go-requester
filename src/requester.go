@@ -10,10 +10,10 @@ import (
 
 func MakeRequest(url string, ch chan<-string) {
 	start := time.Now()
-	resp, err := http.Post(url, "", nil)
+	http.Post(url, "", nil)
 
 	secs := time.Since(start).Seconds()
-	ch <- fmt.Sprintf("%.2f elapsed with response length: %d %s", secs, url, err, resp)
+	ch <- fmt.Sprintf("%.2f elapsed", secs)
 }
 
 func main() {
@@ -26,8 +26,8 @@ func main() {
 		go MakeRequest(url, ch)
 	}
 
-	for range os.Args[1:]{
+	for range os.Args[2:]{
 		fmt.Println(<-ch)
 	}
-	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
+	fmt.Printf("%.2fs total elapsed\n", time.Since(start).Seconds())
 }
